@@ -1,6 +1,6 @@
 ## Como executar
 
-Para executar, você primeiramente deve ter o [Ollama](https://ollama.com/) e alguns modelos de visão.
+Para executar, você primeiramente deve ter o [Ollama](https://ollama.com/) e alguns modelo com suporte a `tools`, em breve será construída uma versão via apenas API. É recomendados que você utilize o modelo Llama3.1-instruct. 
 
 ### Passos iniciais
 
@@ -10,10 +10,14 @@ Para executar, você primeiramente deve ter o [Ollama](https://ollama.com/) e al
 2. **Baixe os modelos necessários**  
    Após a instalação, você pode baixar alguns modelos executando os comandos abaixo no terminal:  
    ```sh
-   ollama pull gemma3
-   ollama pull llama3.2-vision
-   ollama pull minicpm-v
+   ollama pull llama3.1:8b-instruct-q8_0
    ```
+
+3. **Instale o Python**
+   Verifique se sua máquina possui python, caso não possua você poderá baixar a partir do [Site Oficial](https://www.python.org/downloads/)
+
+4. **Instale o Node**
+   Verifique se sua máquina possui o `node`, caso não possua você poderá baixar a partir do [Site Oficial](https://nodejs.org/en/download)
 
 ### Preparando o ambiente
 
@@ -33,10 +37,23 @@ Para executar, você primeiramente deve ter o [Ollama](https://ollama.com/) e al
    .rv\Scripts\activate
    ```
 
-3. **Instale as dependências**  
-   Com o ambiente virtual ativado, instale as dependências necessárias com:
+3. **Instale as dependências do Python**  
+   Com o ambiente virtual ativado, instale as dependências do python necessárias com:
    ```sh
    pip install -r requirements.txt
+   ```
+
+4. **Instale as Dependências do Node**
+   Com o node instalado, você deverá baixar as dependências do projeto, para isso você deverá executar:
+   ```sh
+   npm install
+   npm intall -g expo-cli
+   ```
+
+5. **Crie as variáveis locais de API**
+   Crie um arquivo chamado `.env` para salvar as variáveis de ambiente, você irá precisar ter uma chave do Tavily para executar a busca na web. Você pode obter a chave pelo [site oficial](https://tavily.com/). Após obter sua chave, ponha no arquivo a sua chave:
+   ```py
+   TAVILY_API_KEY = <YOUR API KEY>
    ```
 
 ### Executando o projeto
@@ -45,8 +62,7 @@ Para executar, você primeiramente deve ter o [Ollama](https://ollama.com/) e al
 2. Verifique se os modelos de visão foram baixados e estão acessíveis.
 3. Execute o programa principal com:
    ```sh
-   streamlit run app.py
+   npm run dev
    ```
-
 
 ---
