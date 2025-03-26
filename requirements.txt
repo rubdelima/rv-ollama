@@ -8,3 +8,4 @@ tavily-python
 langgraph
 pydantict
 python-dotenv
+clarifai-grpc

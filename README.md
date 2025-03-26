@@ -51,7 +51,9 @@ Para executar, você primeiramente deve ter o [Ollama](https://ollama.com/) e al
    ```
 
 5. **Crie as variáveis locais de API**
-   Crie um arquivo chamado `.env` para salvar as variáveis de ambiente, você irá precisar ter uma chave do Tavily para executar a busca na web. Você pode obter a chave pelo [site oficial](https://tavily.com/). Após obter sua chave, ponha no arquivo a sua chave:
+   Crie um arquivo chamado `.env` para salvar as variáveis de ambiente, você irá precisar ter uma chave do Tavily para executar a busca na web. Você pode obter a chave pelo [site oficial](https://tavily.com/).
+   Outra chave de API que você deverá possuir é a de Clarify, para obtê-la acesse o [link](https://docs.clarifai.com/clarifai-basics/authentication/app-specific-api-keys/).
+   Após obter suas chaves, ponha no arquivo a sua chave:
    ```py
    TAVILY_API_KEY = <YOUR API KEY>
    ```
