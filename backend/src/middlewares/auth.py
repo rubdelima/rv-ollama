@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from backend.src.config.environment import SECRET_KEY, ALGORITHM
+from src.config.environment import SECRET_KEY, ALGORITHM
 from src.config.database import User
 from src.dependencies import get_db
 
@@ -30,5 +30,4 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
     user = db.query(User).filter(User.email == token_data.username).first()
     if user is None:
         raise credentials_exception
-    
     return user

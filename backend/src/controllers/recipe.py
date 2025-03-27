@@ -1,29 +1,35 @@
-from fastapi import FastAPI, UploadFile, HTTPException
+import os
+from fastapi import HTTPException, UploadFile
 from fastapi.responses import JSONResponse
-from utils.ai.clarifai import get_ingredients_from_image
-from utils.ai.tools_model.model import ToolsModel
 
-app = FastAPI()
+from src.utils.ai.tools_model.model import ToolsModel
+from src.utils.ai.clarifai import get_ingredients_from_image
 
-# Instanciar o modelo de IA (substitua os parâmetros conforme necessário)
 tools_model = ToolsModel(model_name="gemini-2.0-flash", model_type="gemini")
 
-@app.post("/generate-recipe/")
-async def generate_recipe(file: UploadFile):
+async def get_recipe(file: UploadFile):
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="O arquivo enviado não é uma imagem.")
 
-    image_path = f"temp/{file.filename}"
-    with open(image_path, "wb") as buffer:
-        buffer.write(await file.read())
+    temp_dir = "temp"
+    os.makedirs(temp_dir, exist_ok=True)
 
-    # Extrai os ingredientes da imagem usando o Clarifai
+    image_path = os.path.join(temp_dir, file.filename)
+    try:
+        with open(image_path, "wb") as buffer:
+            buffer.write(await file.read())
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao salvar a imagem: {str(e)}")
+
     try:
         ingredients = get_ingredients_from_image(image_path)
+        print('ingredientes', ingredients)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao processar a imagem: {str(e)}")
+    finally:
+        if os.path.exists(image_path):
+            os.remove(image_path)
 
-    # Gera receitas usando os ingredientes
     try:
         result = tools_model.find_recieves(ingredients)
         return JSONResponse(content=result)

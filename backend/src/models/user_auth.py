@@ -6,18 +6,22 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
     
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
 class UserResponse(BaseModel):
     id: int
     name: str
     email: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class LoggedUserResponse(BaseModel):
     access_token: str
-    token_type: str
     user: UserResponse
 
     class Config:
-        orm_mode = True
+        from_attributes = True
