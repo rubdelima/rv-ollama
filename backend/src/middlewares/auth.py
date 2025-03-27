@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from src.env.environment import SECRET_KEY, ALGORITHM
+from backend.src.config.environment import SECRET_KEY, ALGORITHM
 from src.config.database import User
 from src.dependencies import get_db
 

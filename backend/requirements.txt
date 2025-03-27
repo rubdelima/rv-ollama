@@ -17,3 +17,6 @@ passlib[bcrypt]
 psycopg2-binary
 python-jose[cryptography]
 python-multipart
+langchain-google-genai
+langchain-openai
+pytube

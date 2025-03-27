@@ -5,7 +5,7 @@ from passlib.context import CryptContext
 from src.config.database import User
 from src.models.user_auth import UserCreate
 from src.utils.auth import create_access_token
-from src.env.environment import ACCESS_TOKEN_EXPIRE_MINUTES
+from backend.src.config.environment import ACCESS_TOKEN_EXPIRE_MINUTES
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
