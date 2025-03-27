@@ -13,3 +13,11 @@ class UserResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+class LoggedUserResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user: UserResponse
+
+    class Config:
+        orm_mode = True
