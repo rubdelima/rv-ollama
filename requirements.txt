@@ -4,8 +4,10 @@ streamlit
 requests
 langchain
 langchain-ollama
+langchain-google-genai
+langchain-openai
 tavily-python
 langgraph
-pydantict
+pydantic
 python-dotenv
 clarifai-grpc

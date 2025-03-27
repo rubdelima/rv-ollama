@@ -1,19 +1,35 @@
 from lib.tools_model.prompts import search_recieves_prompt, extract_recieved_prompt
 from lib.tools_model.schemas import RecieveBase, RecieveResult, ReportState, RecieveList
 from langchain_ollama import ChatOllama
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langgraph.graph import START, END, StateGraph
 from langgraph.types import Send
 from tavily import TavilyClient
+from pytube import Search
 
 from dotenv import load_dotenv
 load_dotenv()
 
+models_dict = {
+    "gemini" : ChatGoogleGenerativeAI,
+    "openai" : ChatOpenAI,
+    "ollama" : ChatOllama,
+}
+
+def search_videos(recipe):
+    search = Search(recipe)
+    return [result.watch_url for result in search.results[:4]]
+
 class ToolsModel:
-    def __init__(self, model_name, model_type="ollama"):
-        if model_type != "ollama":
+    def __init__(self, model_name, model_type="gemini"):
+        
+        Model = models_dict.get(model_type)
+        if Model is None:
             raise ValueError("Unsupported model type")
         
-        self.llm = ChatOllama(model=model_name)
+        self.llm = Model(model=model_name, temperature=0)
+        
         self.tavily = TavilyClient()
         builder = StateGraph(ReportState)
 
@@ -63,12 +79,20 @@ class ToolsModel:
 
                 query_llm = self.llm.with_structured_output(RecieveBase)
                 result = query_llm.invoke(extract_recieved_prompt.format(content=raw_content))
-
+                
+                if len(result.ingredients) == 0 or len(result.ingredients) == 0:
+                    continue
+                
+                if len(result.videos) == 0:
+                    result.videos = search_videos(recieve)
+                
                 recieve_result =  RecieveResult(title=recieve.capitalize(), url= url, **result.model_dump())
 
                 return {"recieves_results" : [recieve_result.model_dump()]}
             except:
                 continue
+        
+        return {"recieves_results" : []}
     
     def return_recieve(self, state : ReportState):
         return {"recieves" : state.recieves_results}
